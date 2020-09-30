@@ -26,10 +26,11 @@ client.connect(err => {
   // perform actions on the collection object
   
   app.post('/addProduct', (req, res) => {
-    const product = req.body;
-    productsCollection.insertOne(product)
+    const products = req.body;
+    productsCollection.insertMany(products)
     .then(result => {
       console.log(result)
+      res.send(result.insertedCount)
     })
   })
 
@@ -39,7 +40,7 @@ client.connect(err => {
 
 
 
-console.log('db connected')
+// console.log('db connected')
 
   // client.close();
 });
