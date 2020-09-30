@@ -2,9 +2,8 @@ import React from 'react';
 import './Cart.css';
 
 const Cart = (props) => {
-    // console.log(props.cart);
     const cart = props.cart;
-    const total = cart.reduce((total, product) => total + product.price * product.quantity, 0);
+    const total = cart.reduce((total, product) => total + product.price || 1 * product.quantity || 1, 0);
 
     let shipping = 0;
     if (total > 99) shipping = 0;

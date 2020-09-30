@@ -8,7 +8,6 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 const Shop = () => {
-    // const first10 = fakeData.slice(0, 10);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
 
@@ -24,16 +23,17 @@ const Shop = () => {
     useEffect(() => {
         const storedCart = getDatabaseCart();
         const productKeys = Object.keys(storedCart);
-        if (products.length > 0) {
-            const cartProducts = productKeys.map(existingKey => {
-                const product = products.find(product => product.key === existingKey);
-                product.quantity = storedCart[existingKey];
-                // console.log(key, storedCart[key]);
-                return product;
-            })
-            setCart(cartProducts);
-        }
-    }, [products])
+
+        fetch('http://localhost:5000/productsByKeys', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify(productKeys)
+        })
+        .then(res => res.json())
+        .then(data => setCart(data))
+    }, [])
 
     // Adding quantity when add to cart click event executes
     const handleAddToCart = (product) => {

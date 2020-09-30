@@ -23,8 +23,9 @@ const client = new MongoClient(
 
 client.connect(err => {
   const productsCollection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-  // perform actions on the collection object
   
+  // perform actions on the productsCollection object
+  // POST bulk products
   app.post('/addProduct', (req, res) => {
     const products = req.body;
     productsCollection.insertMany(products)
@@ -34,26 +35,31 @@ client.connect(err => {
     })
   })
 
+  // GET all products
   app.get('/products', (req, res) => {
     productsCollection.find({})
     .toArray((err, documents) => {
       res.send(documents)
     })
-
   })
 
+  // GET single selected product
   app.get('/product/:key', (req, res) => {
     productsCollection.find({key: req.params.key})
     .toArray((err, documents) => {
       res.send(documents)
     })
-
   })
 
-
-
-
-
+  // GET many products by keys
+  app.post('/productsByKeys', (req, res)=> {
+    const productKeys = req.body;
+    console.log('this',productKeys)
+    productsCollection.find({key: {$in: productKeys}})
+    .toArray((err, documents) => {
+      res.send(documents)
+    })
+  })
 
 
 // console.log('db connected')

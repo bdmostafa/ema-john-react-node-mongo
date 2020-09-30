@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { getDatabaseCart, removeFromDatabaseCart, processOrder } from '../../utilities/databaseManager';
-import fakeData from '../../fakeData';
 import ReviewItems from '../ReviewItems/ReviewItems';
 import Cart from '../Cart/Cart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,25 +31,23 @@ const Reviews = () => {
     // Retrieve cart data from local storage and set cart from saved state
     useEffect(() => {
         const storedCart = getDatabaseCart();
-        // console.log(storedCart)
-        const productKeys = Object.keys(storedCart)
-        // console.log(productKeys);
-        const cartProducts = productKeys.map(key => {
-            // console.log(storedCart[key])
-            const product = fakeData.find(pd => pd.key === key);
-            product.quantity = storedCart[key]
-            return product;
-        });
-        // console.log(cartProducts);
+        const productKeys = Object.keys(storedCart);
 
-        setCart(cartProducts);
+        fetch('http://localhost:5000/productsByKeys', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify(productKeys)
+        })
+        .then(res => res.json())
+        .then(data => setCart(data))
     }, [])
 
 
     // Happy image thank you when place order click event
     const thankYou = <img src={happyImg}></img>;
 
-    // console.log(cart)
     return (
         <div className="main-container">
             <div className="product-container">
@@ -58,9 +55,6 @@ const Reviews = () => {
                 {
                     cart.map(product => <ReviewItems key={product.key} removeProduct={removeProduct} product={product}></ReviewItems>)
                 }
-                {/* {
-                    <ReviewItems key={cart[0].key} removeProduct={removeProduct} product={cart[0]}></ReviewItems>
-                } */}
                 {
                    orderPlaced && thankYou
                 }
