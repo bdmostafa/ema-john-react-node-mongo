@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import fakeData from '../../fakeData';
 import './Shop.css';
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
@@ -9,25 +8,32 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 const Shop = () => {
-    // console.log(fakeData);
-    const first10 = fakeData.slice(0, 10);
-    // console.log(first10);
-    const [products, setProducts] = useState(first10);
+    // const first10 = fakeData.slice(0, 10);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+    // Load data from database server
+    useEffect(() => {
+        fetch('http://localhost:5000/products')
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }, [])
+
 
     // get the product info from localStorage and match the same product with database and set the product quantity
     useEffect(() => {
         const storedCart = getDatabaseCart();
-        // console.log(storedCart);
         const productKeys = Object.keys(storedCart);
-        const cartProducts = productKeys.map(existingKey => {
-            const product = fakeData.find(product => product.key === existingKey);
-            product.quantity = storedCart[existingKey];
-            // console.log(key, storedCart[key]);
-            return product;
-        })
-        setCart(cartProducts);
-    }, [])
+        if (products.length > 0) {
+            const cartProducts = productKeys.map(existingKey => {
+                const product = products.find(product => product.key === existingKey);
+                product.quantity = storedCart[existingKey];
+                // console.log(key, storedCart[key]);
+                return product;
+            })
+            setCart(cartProducts);
+        }
+    }, [products])
 
     // Adding quantity when add to cart click event executes
     const handleAddToCart = (product) => {
