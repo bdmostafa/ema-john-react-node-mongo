@@ -23,14 +23,15 @@ const client = new MongoClient(
 
 client.connect(err => {
   const productsCollection = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION);
-  
+
+  const ordersCollection = client.db(process.env.DB_NAME).collection(process.env.DB_ORDERS);
+
   // perform actions on the productsCollection object
   // POST bulk products
   app.post('/addProduct', (req, res) => {
-    const products = req.body;
-    productsCollection.insertMany(products)
+    const product = req.body;
+    productsCollection.insertOne(product)
     .then(result => {
-      console.log(result)
       res.send(result.insertedCount)
     })
   })
@@ -61,8 +62,14 @@ client.connect(err => {
     })
   })
 
-
-// console.log('db connected')
+// perform actions on the ordersCollection object
+app.post('/addOrder', (req, res) => {
+  const order = req.body;
+  ordersCollection.insertOne(order)
+  .then(result => {
+    res.send(result.insertedCount > 0)
+  })
+})
 
   // client.close();
 });
