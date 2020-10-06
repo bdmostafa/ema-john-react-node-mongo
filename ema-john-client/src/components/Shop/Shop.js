@@ -13,7 +13,7 @@ const Shop = () => {
 
     // Load data from database server
     useEffect(() => {
-        fetch('http://localhost:5000/products')
+        fetch('https://cryptic-ocean-79527.herokuapp.com/products')
             .then(res => res.json())
             .then(data => setProducts(data))
     }, [])
@@ -24,7 +24,7 @@ const Shop = () => {
         const storedCart = getDatabaseCart();
         const productKeys = Object.keys(storedCart);
 
-        fetch('http://localhost:5000/productsByKeys', {
+        fetch('https://cryptic-ocean-79527.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'Application/json'

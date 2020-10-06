@@ -30,7 +30,7 @@ const Reviews = () => {
         const storedCart = getDatabaseCart();
         const productKeys = Object.keys(storedCart);
 
-        fetch('http://localhost:5000/productsByKeys', {
+        fetch('https://cryptic-ocean-79527.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'Application/json'

@@ -61,17 +61,17 @@ function Login() {
         // For new user
         if (newUser && email && password) {
             createUserWithEmailAndPassword(name, email, password)
-            .then(res => {
-                handleResponse(res, true);
-            })
+                .then(res => {
+                    handleResponse(res, true);
+                })
         }
 
         // For old users
         if (!newUser && email && password) {
             signInWithEmailAndPassword(email, password)
-            .then(res => {
-                handleResponse(res, true);
-            })
+                .then(res => {
+                    handleResponse(res, true);
+                })
         }
         e.preventDefault();
     }
@@ -108,9 +108,15 @@ function Login() {
     return (
         <div style={{ textAlign: "center" }}>
             {
-                isSignedIn
-                    ? <button onClick={signOut}> Sign Out </button>
-                    : <button onClick={googleSignIn}> Sign In </button>
+                !user || user === undefined
+                    ? <button onClick={googleSignIn}>Google Sign In </button>
+                    : isSignedIn
+                        ? <button onClick={signOut}> Sign Out </button>
+                        : <button onClick={googleSignIn}>Google Sign In </button>
+
+                // isSignedIn
+                //     ? <button onClick={signOut}> Sign Out </button>
+                //     : <button onClick={googleSignIn}> Sign In </button>
             }
             <button onClick={fbSignIn}> FB Sign In </button>
             {

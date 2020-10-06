@@ -15,7 +15,7 @@ const Shipment = () => {
     const onSubmit = data => {
         const savedCart = getDatabaseCart();
         const orderDetails = { ...loggedInUser, products: savedCart, shipment: data, orderTime: new Date() }
-        fetch('http://localhost:5000/addOrder', {
+        fetch('https://cryptic-ocean-79527.herokuapp.com/addOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'Application/json'
