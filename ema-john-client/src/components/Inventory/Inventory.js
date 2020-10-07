@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Inventory = () => {
+    document.title = "Add Inventory | EmaJohn"
     const product = {};
     const handleAddProduct = () => {
         fetch('https://cryptic-ocean-79527.herokuapp.com/addProduct', {
