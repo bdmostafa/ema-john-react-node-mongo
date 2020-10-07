@@ -10,6 +10,8 @@ const Shipment = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const [orderPlaced, setOrderPlaced] = useState(false);
 
+    document.title = "Product Shipment | EmaJohn"
+
     const { name, email } = loggedInUser;
 
     const onSubmit = data => {

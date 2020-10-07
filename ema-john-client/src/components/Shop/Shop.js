@@ -6,6 +6,7 @@ import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseMana
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { Button, Spinner } from 'react-bootstrap';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -18,6 +19,7 @@ const Shop = () => {
             .then(data => setProducts(data))
     }, [])
 
+    document.title = "Shop Home Page | EmaJohn"
 
     // get the product info from localStorage and match the same product with database and set the product quantity
     useEffect(() => {
@@ -26,13 +28,13 @@ const Shop = () => {
 
         fetch('https://cryptic-ocean-79527.herokuapp.com/productsByKeys', {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'Application/json'
             },
             body: JSON.stringify(productKeys)
         })
-        .then(res => res.json())
-        .then(data => setCart(data))
+            .then(res => res.json())
+            .then(data => setCart(data))
     }, [])
 
     // Adding quantity when add to cart click event executes
@@ -59,6 +61,19 @@ const Shop = () => {
     return (
         <div className="main-container">
             <div className="product-container">
+                {
+                    products.length === 0
+                    && <Button className="mt-5" variant="primary" disabled>
+                        <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                            Loading...
+                        </Button>
+                }
                 {
                     products.map(product => <Product
                         key={product.key}

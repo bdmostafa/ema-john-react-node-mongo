@@ -5,6 +5,7 @@ import { initLoginFramework, handleGoogleSignIn, handleSignOut, handleFBSignIn, 
 
 
 function Login() {
+    document.title = "Login Page | EmaJohn"
     const [newUser, setNewUser] = useState(false);
     const [user, setUser] = useState({
         isSignedIn: false,

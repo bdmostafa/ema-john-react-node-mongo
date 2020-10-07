@@ -6,6 +6,7 @@ import Cart from '../Cart/Cart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
+import { Button, Spinner } from 'react-bootstrap';
 
 const Reviews = () => {
     const [cart, setCart] = useState([]);
@@ -16,6 +17,8 @@ const Reviews = () => {
         if(cart.length > 0) history.push('/shipment')
         else alert('You have to select one product at least to process checkout')
     }
+
+    document.title = "Product Reviews | EmaJohn"
 
     // Remove a cart from saved state and local storage and update all the carts
     const removeProduct = (productKey) => {
@@ -48,6 +51,19 @@ const Reviews = () => {
         <div className="main-container">
             <div className="product-container">
                 <h2>Total Cart Items: {cart.length} </h2>
+                {
+                    cart.length === 0
+                    && <Button className="mt-5" variant="primary" disabled>
+                        <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                            Loading...
+                        </Button>
+                }
                 {
                     cart.map(product => <ReviewItems key={product.key} removeProduct={removeProduct} product={product}></ReviewItems>)
                 }
