@@ -4,9 +4,10 @@ import { UserContext } from '../../App';
 import { getDatabaseCart, processOrder } from '../../utilities/databaseManager';
 import './Shipment.css'
 import happyImg from '../../images/giphy.gif';
+import PaymentProcess from '../PaymentProcess/PaymentProcess';
 
 const Shipment = () => {
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm();
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const [orderPlaced, setOrderPlaced] = useState(false);
 
@@ -34,36 +35,39 @@ const Shipment = () => {
 
     };
 
-    console.log(watch("example")); // watch input value by passing the name of it
-
     // Happy image thank you when place order click event
-    const thankYou = <img src={happyImg}></img>;
+    const thankYou = <img align="center" src={happyImg}></img>;
 
     return (
-        <>
-
+        <div className="row container ml-auto mr-auto">
             {
                 orderPlaced
                     ? thankYou
-                    : <form className="shipment-form" onSubmit={handleSubmit(onSubmit)}>
-                        <input name="name" defaultValue={name} ref={register({ required: true })} placeholder="Your Name" />
-                        {errors.name && <span className="error">This field is required</span>}
+                    : <>
+                        <div className="col-md-6">
+                            <form className="shipment-form" onSubmit={handleSubmit(onSubmit)}>
+                                <input name="name" defaultValue={name} ref={register({ required: true })} placeholder="Your Name" />
+                                {errors.name && <span className="error">This field is required</span>}
 
-                        <input name="email" defaultValue={email} ref={register({ required: true })} placeholder="Your Email" />
-                        {errors.email && <span className="error">This field is required</span>}
+                                <input name="email" defaultValue={email} ref={register({ required: true })} placeholder="Your Email" />
+                                {errors.email && <span className="error">This field is required</span>}
 
-                        <input name="address" ref={register({ required: true })} placeholder="Your Adress" />
-                        {errors.address && <span className="error">This field is required</span>}
+                                <input name="address" ref={register({ required: true })} placeholder="Your Adress" />
+                                {errors.address && <span className="error">This field is required</span>}
 
-                        <input name="phone" ref={register({ required: true })} placeholder="Your Phone" />
-                        {errors.phone && <span className="error">This field is required</span>}
+                                <input name="phone" ref={register({ required: true })} placeholder="Your Phone" />
+                                {errors.phone && <span className="error">This field is required</span>}
 
-                        <input type="submit" />
-                    </form>
+                                <input type="submit" />
+                            </form>
+                        </div>
+                        <div className="col-md-6">
+                            <h2>Pay for cart items</h2>
+                            <PaymentProcess />
+                        </div>
+                    </>
             }
-        </>
-
-
+        </div>
     );
 };
 

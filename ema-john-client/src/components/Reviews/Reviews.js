@@ -16,6 +16,7 @@ const Reviews = () => {
     const handleProceedCheckout = () => {
         if(cart.length > 0) history.push('/shipment')
         else alert('You have to select one product at least to process checkout')
+    }
 
     document.title = "Product Reviews | EmaJohn"
 
