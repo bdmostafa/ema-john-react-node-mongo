@@ -11,13 +11,14 @@ import { Button, Spinner } from 'react-bootstrap';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [search, setSearch] = useState('');
 
     // Load data from database server
     useEffect(() => {
-        fetch('https://cryptic-ocean-79527.herokuapp.com/products')
+        fetch(`https://cryptic-ocean-79527.herokuapp.com/products?search=${search}`)
             .then(res => res.json())
             .then(data => setProducts(data))
-    }, [])
+    }, [search])
 
     document.title = "Shop Home Page | EmaJohn"
 
@@ -37,6 +38,8 @@ const Shop = () => {
             .then(data => setCart(data))
     }, [])
 
+    console.log(search)
+
     // Adding quantity when add to cart click event executes
     const handleAddToCart = (product) => {
         const toBeAddedKey = product.key;
@@ -54,13 +57,18 @@ const Shop = () => {
         }
 
         setCart(newCart);
-
         addToDatabaseCart(product.key, count)
     }
 
     return (
         <div className="main-container">
             <div className="product-container">
+                <input
+                    placeholder="Search your product"
+                    type="text"
+                    onBlur={(e) => setSearch(e.target.value)}
+                    className="product-search"
+                /> <br />
                 {
                     products.length === 0
                     && <Button className="mt-5" variant="primary" disabled>

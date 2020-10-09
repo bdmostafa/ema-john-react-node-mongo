@@ -20,3 +20,10 @@
 button{
     cursor: pointer;
 }
+
+.product-search {
+    text-align: center;
+    width: 100%;
+    border: 1px solid gray;
+    color: black
+}
